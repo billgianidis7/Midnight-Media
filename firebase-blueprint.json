@@ -1,0 +1,163 @@
+{
+  "entities": {
+    "Album": {
+      "title": "Album",
+      "description": "A curated musical album or collection created by an artist.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "artist": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "releaseType": { "type": "string", "enum": ["Album", "Single", "EP", "Remix"] },
+        "year": { "type": "string", "minLength": 4, "maxLength": 4, "pattern": "^\\d{4}$" },
+        "commentary": { "type": "string", "minLength": 0, "maxLength": 2000 },
+        "coverUrl": { "type": "string", "minLength": 0, "maxLength": 500 },
+        "tags": { "type": "array", "description": "Up to 5 genre/mood tags" },
+        "visibility": { "type": "string", "enum": ["public", "private"] },
+        "authorUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "trackCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "artist", "releaseType", "year", "commentary", "coverUrl", "tags", "visibility", "authorUid", "authorName", "trackCount", "createdAt", "updatedAt"]
+    },
+    "Track": {
+      "title": "Track",
+      "description": "A song posted to the feed and belonging to an album, with commentary, likes, and reel snippet bounds.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "albumId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "albumTitle": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "artist": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "releaseType": { "type": "string", "enum": ["Album", "Single", "EP", "Remix"] },
+        "year": { "type": "string", "minLength": 4, "maxLength": 4, "pattern": "^\\d{4}$" },
+        "commentary": { "type": "string", "minLength": 0, "maxLength": 2000 },
+        "coverUrl": { "type": "string", "minLength": 0, "maxLength": 500 },
+        "durationSec": { "type": "number" },
+        "snippetStartSec": { "type": "number" },
+        "snippetEndSec": { "type": "number" },
+        "waveformPeaks": { "type": "array", "description": "Up to 128 normalized amplitude bars (0-100)" },
+        "audioSourceType": { "type": "string", "enum": ["synth", "local_idb", "drive"] },
+        "synthPreset": { "type": "string", "minLength": 0, "maxLength": 64 },
+        "localFileId": { "type": "string", "minLength": 0, "maxLength": 128 },
+        "driveFileId": { "type": "string", "minLength": 0, "maxLength": 256 },
+        "driveWebViewLink": { "type": "string", "minLength": 0, "maxLength": 512 },
+        "likeCount": { "type": "number" },
+        "visibility": { "type": "string", "enum": ["public", "private"] },
+        "authorUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "albumId", "albumTitle", "title", "artist", "releaseType", "year", "commentary", "coverUrl", "durationSec", "snippetStartSec", "snippetEndSec", "waveformPeaks", "audioSourceType", "synthPreset", "localFileId", "driveFileId", "driveWebViewLink", "visibility", "authorUid", "authorName", "createdAt", "updatedAt"]
+    },
+    "TrackLike": {
+      "title": "TrackLike",
+      "description": "A verified listener like record on an individual track.",
+      "type": "object",
+      "properties": {
+        "trackId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["trackId", "userId", "createdAt"]
+    },
+    "AlbumComment": {
+      "title": "AlbumComment",
+      "description": "A listener comment left on an entire album.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "albumId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "body": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "visibility": { "type": "string", "enum": ["public"] },
+        "authorUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "authorPhotoUrl": { "type": "string", "minLength": 0, "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "albumId", "body", "visibility", "authorUid", "authorName", "authorPhotoUrl", "createdAt"]
+    },
+    "TrackComment": {
+      "title": "TrackComment",
+      "description": "A listener comment left on an individual track, optionally anchored to a timestamp.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "trackId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "timestampLabel": { "type": "string", "minLength": 0, "maxLength": 16 },
+        "body": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "visibility": { "type": "string", "enum": ["public"] },
+        "authorUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "authorPhotoUrl": { "type": "string", "minLength": 0, "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "trackId", "timestampLabel", "body", "visibility", "authorUid", "authorName", "authorPhotoUrl", "createdAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Isolated private user metadata and Google Drive backup folder ID.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "email": { "type": "string", "minLength": 3, "maxLength": 254 },
+        "driveFolderId": { "type": "string", "minLength": 0, "maxLength": 256 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "driveFolderId", "updatedAt"]
+    },
+    "CloudBackupRecord": {
+      "title": "CloudBackupRecord",
+      "description": "Metadata pointer to an audio master, exported reel snippet, or album archive backed up to Google Drive.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "trackId": { "type": "string", "minLength": 0, "maxLength": 128 },
+        "albumId": { "type": "string", "minLength": 0, "maxLength": 128 },
+        "fileName": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "mimeType": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "sizeBytes": { "type": "number" },
+        "kind": { "type": "string", "enum": ["audio_master", "reel_snippet", "reel_video", "album_archive"] },
+        "driveFileId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "driveWebViewLink": { "type": "string", "minLength": 0, "maxLength": 512 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerUid", "trackId", "albumId", "fileName", "mimeType", "sizeBytes", "kind", "driveFileId", "driveWebViewLink", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/albums/{albumId}": {
+      "schema": { "$ref": "#/entities/Album" },
+      "description": "Curated musical albums created by users."
+    },
+    "/tracks/{trackId}": {
+      "schema": { "$ref": "#/entities/Track" },
+      "description": "Individual song posts in the feed linked to an album."
+    },
+    "/tracks/{trackId}/likes/{userId}": {
+      "schema": { "$ref": "#/entities/TrackLike" },
+      "description": "Verified listener likes on an individual track."
+    },
+    "/albums/{albumId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/AlbumComment" },
+      "description": "Listener comments on an entire album."
+    },
+    "/tracks/{trackId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/TrackComment" },
+      "description": "Listener comments on an individual track."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "PII-isolated private profile and Drive backup settings."
+    },
+    "/users/{userId}/backups/{backupId}": {
+      "schema": { "$ref": "#/entities/CloudBackupRecord" },
+      "description": "User cloud backup index linked to Google Drive files."
+    }
+  }
+}

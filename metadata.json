@@ -1,0 +1,6 @@
+{
+  "name": "ZEROMEDIA.INFO — Sound For A Quieter Tomorrow",
+  "description": "An atmospheric dark-mode music album collection, track commentary feed, precision waveform reel trimmer, and cloud-backed audio studio.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
